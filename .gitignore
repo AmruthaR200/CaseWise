@@ -32,6 +32,7 @@ dist/
 
 # 🔹 ML / Deep Learning models (IMPORTANT)
 *.h5
+!models/casewise_cnn.h5
 *.hdf5
 *.pt
 *.pth
