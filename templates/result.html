@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>CaseWise – Diagnosis Result</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+<div class="container">
+    <header class="site-header">
+        <div class="logo-badge"><i class="bi bi-heart-pulse-fill"></i></div>
+        <div class="header-text">
+            <h1>CaseWise Result</h1>
+            <p>AI analysis and bilingual explanation</p>
+        </div>
+    </header>
+
+    <section class="card">
+        <h2><i class="bi bi-graph-up-arrow"></i> Prediction Summary</h2>
+        <p><strong>Patient:</strong> {{ case.patient_name }} ({{ case.patient_id }})</p>
+        <p><strong>Disease:</strong> {{ case.prediction.disease_name }} ({{ case.prediction.disease_code }})</p>
+    </section>
+
+    <section class="card">
+        <h2><i class="bi bi-chat-left-text"></i> Explanation</h2>
+        <h3><i class="bi bi-translate"></i> English</h3>
+        <p>{{ case.explanation_en }}</p>
+        <h3><i class="bi bi-translate"></i> Kannada</h3>
+        <p>{{ case.explanation_kn }}</p>
+    </section>
+
+    <section class="card">
+        <h2><i class="bi bi-nutrition"></i> Diet Recommendation</h2>
+        <h3><i class="bi bi-translate"></i> English</h3>
+        <p>{{ case.diet_en }}</p>
+        <h3><i class="bi bi-translate"></i> Kannada</h3>
+        <p>{{ case.diet_kn }}</p>
+    </section>
+
+    {% if shap_url or lime_url %}
+    <section class="card">
+        <h2><i class="bi bi-diagram-3"></i> Explainable AI Visualizations</h2>
+        <div class="xai-grid">
+            {% if shap_url %}
+            <div class="xai-item">
+                <h3><i class="bi bi-brightness-high"></i> SHAP</h3>
+                <img src="{{ shap_url }}" alt="SHAP explanation">
+            </div>
+            {% endif %}
+            {% if lime_url %}
+            <div class="xai-item">
+                <h3><i class="bi bi-grid-3x3"></i> LIME</h3>
+                <img src="{{ lime_url }}" alt="LIME explanation">
+            </div>
+            {% endif %}
+        </div>
+    </section>
+    {% endif %}
+
+    {% if case.doctor_suggestions %}
+    <section class="card">
+        <h2><i class="bi bi-people"></i> Suggested Specialists (Mysore)</h2>
+        <ul>
+            {% for d in case.doctor_suggestions %}
+            <li>
+                <i class="bi bi-person-badge"></i>
+                <span><strong>{{ d.name }}</strong> – {{ d.specialization }}, {{ d.hospital }} ({{ d.contact }})</span>
+            </li>
+            {% endfor %}
+        </ul>
+    </section>
+    {% endif %}
+
+    <div class="actions">
+        <a href="{{ url_for('report') }}" class="btn-secondary"><i class="bi bi-file-earmark-pdf"></i> Download PDF Report</a>
+        <a href="{{ url_for('index') }}" class="btn-link"><i class="bi bi-plus-circle"></i> New Diagnosis</a>
+    </div>
+</div>
+</body>
+</html>
+

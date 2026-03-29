@@ -1,0 +1,15 @@
+flask
+tensorflow
+keras
+numpy
+Pillow
+scikit-image
+shap
+lime
+pymongo
+python-dotenv
+reportlab
+weasyprint
+transformers
+torch
+opencv-python
